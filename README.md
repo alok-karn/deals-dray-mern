@@ -1,40 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p>This is an admin pannel to manage the employee </p>
 
-## Getting Started
+### Getting Started
 
-First, run the development server:
+1. Clone the repository
+   `bash git clone https://github.com/alok-karn/deals-dray-mern `
+2. Install dependencies
+   `bash npm install `
+3. Start the server
+   `bash npm start `
+
+### NOTE
+
+-   set .env file in root directory with following
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+MONGO_URI=your_mongo_uri
+JWT_SECRET=your_jwt_secret
+FIREBASE_API_KEY=your_firebase_api_key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Features
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+-   Admin can add, update, delete employee
+-   Admin can view all the employees
+-   Admin can search employee by name, email, mobile and designation
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### Few Things to Note
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+-   if user register with name as `admin` then it will be considered as admin user.
+-   if user register with name as `any name` then it will be considered as normal user.
+-   Only admin is allowed to add, update, delete employee.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Techonologies Used
 
-## Learn More
+-   Next.js and TailwindCSS: For frontend and API
+-   MongoDB: For database
+-   Firebase: For storing and serving images of employee
 
-To learn more about Next.js, take a look at the following resources:
+### Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![image](https://img.shields.io/badge/next%20js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![image](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![image](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![image](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
+![image](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![image](https://img.shields.io/badge/VSCode-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
+![image](https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white)
+![image](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)
+![image](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![image](https://img.shields.io/badge/NextAuth.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![image](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![image](https://img.shields.io/badge/axios-671ddf?&style=for-the-badge&logo=axios&logoColor=white)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### API Endpoints
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   POST /api/auth/register - Register user
+-   POST /api/auth/login - Login user
+-   POST /api/employee - Add employee
+-   GET /api/employee - Get all employees
+-   GET /api/employee/:id - Get employee by id
+-   PUT /api/employee/:id - Update employee
+-   DELETE /api/employee/:id - Delete employee
+-   GET /api/employee/search?name=alok - Search employee by name
+-   GET /api/employee/search?email=xyz@xyz.com - Search employee by email
+-   GET /api/employee/search?mobile=1234567890 - Search employee by mobile
+-   GET /api/employee/search?designation=developer - Search employee by designation
