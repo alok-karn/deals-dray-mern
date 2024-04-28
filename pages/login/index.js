@@ -44,7 +44,7 @@ export default function Login() {
                 setError(response.data.error);
             }
         } catch (error) {
-            alert("Login error:", error.response.data.error);
+            // alert("Login error:", error.response.data.error);
             setError(error.response.data.error);
             // setError("An error occurred. Please try again later.");
         }

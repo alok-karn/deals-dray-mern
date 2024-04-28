@@ -1,18 +1,30 @@
 import { storage } from "@/firebase";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { set } from "mongoose";
 import { useState } from "react";
 
-const EmployeeForm = () => {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobile, setMobile] = useState("");
-    const [designation, setDesignation] = useState("");
-    const [gender, setGender] = useState("");
-    const [course, setCourse] = useState([]);
-    const [image, setImage] = useState("");
+const EmployeeForm = ({
+    _id,
+    name: existingName,
+    email: existingEmail,
+    mobile: existingMobile,
+    designation: existingDesignation,
+    gender: existingGender,
+    course: existingCourse,
+    image: existingImage,
+}) => {
+    const [name, setName] = useState(existingName || "");
+    const [email, setEmail] = useState(existingEmail || "");
+    const [mobile, setMobile] = useState(existingMobile || "");
+    const [designation, setDesignation] = useState(existingDesignation || "");
+    const [gender, setGender] = useState(existingGender || "");
+    const [course, setCourse] = useState(existingCourse || []);
+    const [image, setImage] = useState(existingImage || "");
     const [imagePreview, setImagePreview] = useState("");
     const [error, setError] = useState("");
+
+    const [ID, setID] = useState(_id || "");
 
     const handleCourseChange = (e) => {
         const { value } = e.target;
@@ -48,7 +60,10 @@ const EmployeeForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!image || image.length === 0) return;
+        if (!image || image.length === 0) {
+            setError("Please upload an image");
+            return;
+        }
 
         let downloadURL = "";
 
@@ -73,6 +88,34 @@ const EmployeeForm = () => {
         };
 
         try {
+            if (_id) {
+                const { data } = await axios.put(`/api/employee/`, {
+                    ...formData,
+                    _id: ID,
+                });
+
+                if (data.success) {
+                    alert("Employee updated successfully!");
+                    console.log("Employee updated successfully!");
+
+                    setName("");
+                    setEmail("");
+                    setMobile("");
+                    setDesignation("");
+                    setGender("");
+                    setCourse([]);
+                    setImage("");
+                    setImagePreview("");
+                    setError("");
+                    setID("");
+                }
+            }
+        } catch (error) {
+            setError(error.response.data.message || "Error updating employee");
+            console.error("Error updating employee", error);
+        }
+
+        try {
             const { data } = await axios.post("/api/employee", formData);
             if (data.success) {
                 alert("Employee created successfully!");
@@ -87,9 +130,11 @@ const EmployeeForm = () => {
                 setImage("");
                 setImagePreview("");
                 setError("");
+                setID("");
             }
         } catch (error) {
             // alert(error.response.data.message || "Error creating employee");
+
             setError(error.response.data.message || "Error creating employee");
             console.error("Error creating employee", error);
         }
@@ -247,9 +292,13 @@ const EmployeeForm = () => {
                         ))}
                     </div>
                     <button
-                        className="px-4 py-2 font-medium text-lg capitalize bg-blue-400 rounded-md text-gray-100 mt-6 hover:bg-blue-500"
+                        className={`px-4 py-2 font-medium text-lg capitalize rounded-md text-gray-100 mt-6  ${
+                            ID
+                                ? "bg-green-400 hover:bg-green-500"
+                                : "bg-blue-400 hover:bg-blue-500"
+                        }`}
                         type="submit">
-                        Create Employee
+                        {ID ? "Update Employee" : "Create Employee"}
                     </button>
                     {error && (
                         <div className="mt-4 text-red-600 font-bold">

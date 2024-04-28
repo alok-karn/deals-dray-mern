@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 const EmployeeList = () => {
     const [menu, setMenu] = useState("create");
     const [data, setData] = useState([]);
+    const [oneEmployee, setOneEmployee] = useState({});
 
     const getEmployeeDetails = useCallback(async () => {
         try {
@@ -36,6 +37,19 @@ const EmployeeList = () => {
         }
     };
 
+    const handleUpdate = useCallback(async (id) => {
+        try {
+            const { data } = await axios.get(`/api/employee/?id=${id}`);
+            if (data.success) {
+                setOneEmployee(data.data);
+                setMenu("create");
+                // setOneEmployee({});
+            }
+        } catch (error) {
+            console.log("Error Fetching Employee", error);
+        }
+    }, []);
+
     return (
         <Layout>
             <div className="w-full py-2 flex items-center justify-between">
@@ -57,11 +71,11 @@ const EmployeeList = () => {
             </div>
             {
                 {
-                    create: <EmployeeForm />,
+                    create: oneEmployee && <EmployeeForm {...oneEmployee} />,
                     view: (
                         <EmployeeTableView
-                            data={data}
-                            handleDelete={handleDelete}
+                            handleUpdate={handleUpdate}
+                            // handleDelete={handleDelete}
                         />
                     ),
                 }[menu]

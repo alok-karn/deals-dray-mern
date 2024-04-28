@@ -59,8 +59,13 @@ export default async function handle(req, res) {
 
     if (method === "GET") {
         try {
-            const employees = await Employee.find();
-            return res.status(200).json({ success: true, data: employees });
+            if (req.query?.id) {
+                const employee = await Employee.findById(req.query.id);
+                return res.status(200).json({ success: true, data: employee });
+            } else {
+                const employees = await Employee.find();
+                return res.status(200).json({ success: true, data: employees });
+            }
         } catch (error) {
             return res.status(500).json({
                 success: false,
@@ -95,6 +100,18 @@ export default async function handle(req, res) {
             req.body;
 
         try {
+            // const existingEmployeeEmail = await Employee.findOne({ email });
+            const existingEmployeeEmail = await Employee.findOne({
+                email,
+                _id: { $ne: _id },
+            });
+
+            if (existingEmployeeEmail) {
+                return res
+                    .status(400)
+                    .json({ success: false, message: "Email already exists" });
+            }
+
             const data = await Employee.findByIdAndUpdate(_id, {
                 imageUrl: image,
                 name,
