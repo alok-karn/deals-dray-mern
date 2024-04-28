@@ -36,6 +36,8 @@ FIREBASE_API_KEY=your_firebase_api_key
 -   Next.js and TailwindCSS: For frontend and API
 -   MongoDB: For database
 -   Firebase: For storing and serving images of employee
+-   JWT: For authentication and managing user session
+-   Bcrypt: For hashing password
 
 ### Tech Stack
 
